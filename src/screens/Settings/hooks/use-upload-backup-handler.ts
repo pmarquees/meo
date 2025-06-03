@@ -37,7 +37,7 @@ function usePickDocumentMutation() {
       });
     }
 
-    return JSON.parse(result) as Pick<Post, "timestamp" | "value">[];
+    return JSON.parse(result) as Pick<Post, "timestamp" | "value" | "image">[];
   });
 }
 
@@ -77,7 +77,11 @@ function useUploadBackupHandler(options?: UseMutationOptions<void, string>) {
     await Promise.all(
       backup.map((post) => {
         if (!hash[post.value]) {
-          return createPost({ text: post.value, timestamp: post.timestamp });
+          return createPost({
+            text: post.value,
+            image: (post as any).image,
+            timestamp: post.timestamp,
+          });
         }
       })
     );

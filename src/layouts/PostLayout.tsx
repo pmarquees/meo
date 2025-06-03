@@ -6,6 +6,7 @@ import { Frame } from "../components/Frame";
 import { NavigationHeader } from "../components/NavigationHeader";
 import { PostInputAccessory } from "../components/PostInputAccessory";
 import { PostTextContent } from "../components/PostTextContent";
+import { Icon } from "../components/Icon/Icon";
 import { useTextCaretWord } from "../hooks/use-text-caret-word";
 import { usePaddingHorizontal } from "../providers/Theming/hooks/use-padding-horizontal";
 import { useTheme } from "../providers/Theming/hooks/use-theme";
@@ -14,14 +15,16 @@ interface Props {
   text: string;
   changeText: (text: string) => void;
   onCreatePostPress?: () => void;
+  onAddImagePress?: () => void;
   children?: React.ReactNode;
   navigationHeaderChildren?: React.ReactNode;
   beforeTextContent?: React.ReactNode;
+  bottomChildren?: React.ReactNode;
 }
 
 const PostLayout = React.forwardRef<TextInput & NativeMethods, Props>(
   function PostLayout(
-    { changeText, text, children, onCreatePostPress, beforeTextContent },
+    { changeText, text, children, onCreatePostPress, onAddImagePress, beforeTextContent, bottomChildren },
     ref: React.Ref<TextInput & NativeMethods>
   ) {
     const theme = useTheme();
@@ -70,6 +73,16 @@ const PostLayout = React.forwardRef<TextInput & NativeMethods, Props>(
           caretWord={caretWord}
           onHashtagSelected={(text) => changeText(text)}
         >
+          {onAddImagePress && (
+            <Pressable
+              onPress={onAddImagePress}
+              style={{
+                marginRight: theme.units.small,
+              }}
+            >
+              <Icon type="Plus" size="medium" color="primary" />
+            </Pressable>
+          )}
           {onCreatePostPress && (
             <Pressable
               onPress={onCreatePostPress}
@@ -87,6 +100,7 @@ const PostLayout = React.forwardRef<TextInput & NativeMethods, Props>(
             </Pressable>
           )}
         </PostInputAccessory>
+        {bottomChildren}
       </>
     );
   }
