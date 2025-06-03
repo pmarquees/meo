@@ -12,6 +12,7 @@ import { Pressable } from "react-native";
 import { Font } from "../components/Font";
 import { Frame } from "../components/Frame";
 import { Icon } from "../components/Icon/Icon";
+import { Picture } from "../components/Picture";
 import { PostLayout } from "../layouts/PostLayout";
 import { useDebounceValue } from "../hooks/use-debounce-value";
 import { useEditPost } from "../hooks/use-edit-post";
@@ -23,6 +24,7 @@ import { QueryKeys } from "../shared/QueryKeys";
 import { Post } from "../shared/SQLiteEntities";
 import { usePaddingHorizontal } from "../providers/Theming/hooks/use-padding-horizontal";
 import { useTheme } from "../providers/Theming/hooks/use-theme";
+import { base64ToImageUrl } from "../shared/image-utils";
 
 const PostDetails = React.memo(function PostDetails() {
   const {
@@ -128,6 +130,13 @@ const PostDetails = React.memo(function PostDetails() {
             <Icon type="More" size="medium" color="primary" />
           </Pressable>
         </Frame>
+      }
+      bottomChildren={
+        post?.image ? (
+          <Frame marginTop="small" paddingHorizontal={paddingHorizontal}>
+            <Picture source={{ uri: base64ToImageUrl(post.image) }} />
+          </Frame>
+        ) : null
       }
     />
   );

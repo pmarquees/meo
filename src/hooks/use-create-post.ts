@@ -6,6 +6,7 @@ import { useSQLiteMutation } from "./use-sqlite-mutation";
 
 interface Variables {
   text: string;
+  image?: string | null;
   timestamp?: string;
 }
 
@@ -17,13 +18,13 @@ function useCreatePost(options?: UseMutationOptions<Data, string, Variables>) {
   const { mutate: invalidatePosts } = useInvalidatePosts();
   const { mutateAsync: insertHashtag } = useInsertHashtags();
   const { mutateAsync: insertPost } = useSQLiteMutation<Variables>({
-    mutation: "insert into posts (value) values (?)",
-    variables: ({ text }) => [text],
+    mutation: "insert into posts (value, image) values (?, ?)",
+    variables: ({ text, image }) => [text, image || null],
   });
 
   const { mutateAsync: insertPostFromBackup } = useSQLiteMutation<Variables>({
-    mutation: "insert into posts (value, timestamp) values (?, ?)",
-    variables: ({ text, timestamp }) => [text, timestamp],
+    mutation: "insert into posts (value, image, timestamp) values (?, ?, ?)",
+    variables: ({ text, image, timestamp }) => [text, image || null, timestamp],
   });
 
   return useMutation<Data, string, Variables>(

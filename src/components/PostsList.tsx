@@ -20,6 +20,8 @@ import { Post } from "../shared/SQLiteEntities";
 import { Frame } from "./Frame";
 import { Icon } from "./Icon/Icon";
 import { PostTextContent } from "./PostTextContent";
+import { Picture } from "./Picture";
+import { base64ToImageUrl } from "../shared/image-utils";
 import { UserAvatar } from "./UserAvatar";
 
 const PostsList = React.forwardRef<
@@ -82,7 +84,7 @@ const PostsList = React.forwardRef<
 });
 
 const POST_ITEM_HEIGHT = 130;
-const PostLine = React.memo(function PostLine({ id, value }: Post) {
+const PostLine = React.memo(function PostLine({ id, value, image }: Post) {
   const { paddingHorizontal } = usePaddingHorizontal();
   const { navigate } = useNavigation<NavigationProp<NavigationParamsConfig>>();
   const theme = useTheme();
@@ -134,6 +136,11 @@ const PostLine = React.memo(function PostLine({ id, value }: Post) {
             <PostTextContent value={value} numberOfLines={6} />
           </Frame>
         </Frame>
+        {image && (
+          <Frame marginTop="small">
+            <Picture source={{ uri: base64ToImageUrl(image) }} />
+          </Frame>
+        )}
       </Frame>
     </Pressable>
   );
