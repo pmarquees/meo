@@ -1,4 +1,5 @@
 import { MutationOptions, useMutation } from "react-query";
+import { SQLResultSet } from "expo-sqlite";
 import { useDB } from "../providers/SQLiteProvider";
 
 type Variables<TVariables = void> = (
